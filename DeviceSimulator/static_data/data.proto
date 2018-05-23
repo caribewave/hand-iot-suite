@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+/* 
+ * Inspired by the official protocol spec docs, and the Weather Underground upload protocol
+ * Weather underground: http://wiki.wunderground.com/index.php/PWS_-_Upload_Protocol
+ * Davis Protocol spec: https://www.davisnet.com/support/weather/download/VantageSerialProtocolDocs_v261.pdf
+ * Davis Sensor Details: https://www.davisnet.com/product_documents/weather/spec_sheets/6250_6351_57_SS.pdf
+ */
+
+
+/*
+ * Packet containing all weather station live data
+ */
+package Simulator;
+
+message SimulatorData {
+   
+    string Timestamp = 1 ;
+    float OutsideAirTemperatureInC = 2;
+    float OutsideRelativeHumidity = 3;
+    float OutsideDewPointTemperatureInC = 4;
+    float BarometricPressureInHPaPerMb = 5;
+    uint32 PresentWindDirection = 6;
+    float PresentWindSpeedInKnots = 7;
+    float UVIndexInRange016 = 8;
+    float SolarRadiationWattsPerM2InRange01800 = 9;
+    float RainRateInMmPerHour = 10;
+    float DailyRainInMm = 11;
+    float DailyETInMm = 12;
+    float MonthlyETInMm = 13;
+    float TenMinuteAverageWindSpeedInKnots = 14;
+    float TwoMinuteAverageWindSpeedInKnots = 15;
+    float TenMinuteWindGustSpeedInKnots = 16;
+    uint32 TenMinuteWindGustDirection = 17;
+    string deviceId = 18;
+    uint32 packageId = 19;
+}
+
+/*
+ * Packet containing all weather station alarm states
+ */
+ message WeatherStationAlarmPacket {
+    
+    string deviceId = 1;
+    uint32 packageId = 2;
+    
+    // Inside Alarms
+    uint32 insideAlarms = 3;
+    
+    // Rain Alarms
+    uint32 rainAlarms = 4;
+
+    // Outside Alarms
+    uint32 ousideAlarms = 5;
+
+    // Humidity Alarms
+    uint32 humidityAlarms = 6;
+
+    // Temp Alarms
+    uint32 tempAlarms = 7;
+
+    // Soil & Leaf Alarms
+    uint32 soilLeafAlarms = 8;
+
+}
