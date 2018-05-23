@@ -1,0 +1,40 @@
+version: "3"
+services:
+  mosquitto:
+    container_name: eclipse-mosquitto    
+    image: eclipse-mosquitto:latest
+    ports:
+      - "1883:1883"
+      - "9001:9001" 
+  mongo:
+    container_name: mongocomposecontainer
+    image: mongo:jessie
+    # volumes:
+    #   - ./data:/data/db
+    ports:
+      - "27017:27017"         
+  DeviceSimulator:
+    container_name: devicesimulatorcontainer
+    image: devicesimulator:latest
+    #restart: always
+    environment:    
+      MOSQUITTO_ENV: "mosquitto"
+    #build: .
+    links:
+      - mosquitto
+    depends_on:
+      - mosquitto
+  MiddleLayer:
+    container_name: middlelayercontainer
+    #restart: always
+    image: middlelayer:latest
+    environment:
+      MONGO_ENV: "mongo"
+      MOSQUITTO_ENV: "mosquitto"
+    #build: .
+    links:
+      - mosquitto
+      - mongo 
+    depends_on:
+      - mongo 
+      - mosquitto     

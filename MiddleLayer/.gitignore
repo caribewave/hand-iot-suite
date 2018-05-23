@@ -1,0 +1,8 @@
+node_modules
+example/assets
+lib/
+dist/
+build/
+Logs/
+commands.txt
+npm-debug.log
