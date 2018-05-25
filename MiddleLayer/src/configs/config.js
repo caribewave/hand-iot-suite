@@ -49,6 +49,7 @@ module.exports = {
         database: 'CSVData',
         options: '',
         weatherDataCollectionName: 'WeatherStation',
-        alertDataCollectionName: 'Alerts'
+        alertDataCollectionName: 'Alerts',
+        devicesCollectionName:'Devices'
     }
 };

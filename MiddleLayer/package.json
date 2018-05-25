@@ -2,7 +2,7 @@
   "name": "hand_weather_station_middle_layer",
   "version": "0.0.1",
   "description": "Middle Layer",
-  "main": "./build/index.js",
+  "main": "./build/MainController.js",
   "scripts": {
     "babel-node": "babel-node --",
     "build": "./node_modules/.bin/babel src -d build",
@@ -22,13 +22,15 @@
     "mocha",
     "lint"
   ],
-  "author": "Accenture",
+  "author": "HAND",
   "license": "",
   "bugs": {
     "url": ""
   },
   "homepage": "",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
     "mongodb": "^2.2.33",
     "mqtt": "^2.17.0",
     "protobufjs": "^6.8.6",

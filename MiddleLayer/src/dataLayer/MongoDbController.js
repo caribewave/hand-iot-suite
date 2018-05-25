@@ -37,12 +37,33 @@ export default class MongoDbController {
                 }
             }
 
-            await collection.insert(objToInsert);
+            return await collection.insert(objToInsert);
         }
         catch (err) {
-            winston.error('Collection INSERT MONGO failed ',{error:err});
+            winston.error('Collection INSERT in MONGO failed ', { error: err });
+            throw err;
+        }
+    }
+    async FindOneItem(details, collectionName) {
+        try {
+            let collection = this.db.collection(collectionName);
+            //create a new insert object
+            return await collection.findOne(details);
+        }
+        catch (err) {
+            winston.error('Collection FIND in MONGO failed ', { error: err });
+            throw err;
+        }
+    }
+    async UpdateItem(query, updatedObj, collectionName) {
+        try {
+            let collection = this.db.collection(collectionName);
+            //create a new insert object
+            return await collection.update(query, updatedObj);
+        }
+        catch (err) {
+            winston.error('Collection UPDATE in MONGO failed ', { error: err });
             throw err;
         }
     }
 }
-

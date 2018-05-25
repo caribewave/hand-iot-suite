@@ -1,4 +1,5 @@
 import config from "./configs/config";
+import * as ServerController from "./api/ServerController";
 import ProtobufController from './protoModule/ProtobufController';
 import MqttClientController from './mqttClient/MqttClientController';
 import CumulocityController from './cumulocity/CumulocityController';
@@ -22,7 +23,7 @@ let processing = false;
 let decodedData;
 
 async function main() {
-    // const collection;
+    //const collection;
     try {
         await mongoDbController.connect();
     }
@@ -40,6 +41,7 @@ async function main() {
     }
     //start the process of the message queue to be sent to Cumulocity
     setInterval(processQueue, config.queueProcessingInterval);
+    ServerController.StartServer(mongoDbController);
 }
 
 function processQueue() {
@@ -128,6 +130,7 @@ async function SaveToMongo(decodedData, collectionName) {
 }
 
 main();
+
 process.once('uncaughtException', (err) => {
     winston.error('Uncaught Exception at main Level', { error: err });
     //do some cleanup
