@@ -50,6 +50,10 @@ module.exports = {
         options: '',
         weatherDataCollectionName: 'WeatherStation',
         alertDataCollectionName: 'Alerts',
-        devicesCollectionName:'Devices'
+        devicesCollectionName:'Devices',
+        apiUsersCollectionName: 'ApiUsers'
+    },
+    ApiSettings:{
+        port : 60000
     }
 };
