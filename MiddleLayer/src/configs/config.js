@@ -39,7 +39,9 @@ module.exports = {
             protocolId: 'MQIsdp',
             protocolVersion: 3,
             clean: true,
-            encoding: 'utf32'
+            encoding: 'utf32',
+            username: 'hand',
+            password: 'h@nd-t3ch!',
         }
     },
     MongoDBOptions: {

@@ -2,7 +2,7 @@
 const serverHost = process.env.MOSQUITTO_ENV || 'localhost';
 module.exports = {
     deviceId: 'Device_Simulator',
-    sendingAlarmInterval: 1000 * 30,//every 60 seconds
+    sendingAlarmInterval: 1000 * 30,//every 30 seconds
     csvDataSendingInterval: 1000 * 5,//every 5 seconds
     paths: {
         csvDataPath: '../static_data/data.csv',
@@ -22,6 +22,17 @@ module.exports = {
         receiveMessageTopics: {
             receivedPackageTopic: 'packageReceivedTopic',
             alertReceivedTopic: 'alertReceivedTopic'
+        },
+        mqttConnectionOptions :{
+            port: 1883,            
+            username: 'hand',
+            password: 'h@nd-t3ch!',
+            keepalive: 60,
+            reconnectPeriod: 1000,
+            protocolId: 'MQIsdp',
+            protocolVersion: 3,
+            clean: true,
+            encoding: 'utf32'
         }
     }
 };

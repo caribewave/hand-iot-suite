@@ -7,19 +7,8 @@ export default class MqttClientController {
         this.clientId = clientId;
     }
     ConnectAndSubscribe(ProcessMessageHandler) {
-        var options = {
-            port: 1883,
-            host: this.mqtServerPath,
-            clientId: this.clientId,
-            username: 'hand',
-            password: 'nopassyet',
-            keepalive: 60,
-            reconnectPeriod: 1000,
-            protocolId: 'MQIsdp',
-            protocolVersion: 3,
-            clean: true,
-            encoding: 'utf32'
-        };
+        const options = config.MQTTOptions.mqttConnectionOptions;
+        options.clientId = config.deviceId;
         this.client = connect(this.mqtServerPath, options);
 
         this.client.on('connect', (connack) => {
@@ -32,7 +21,7 @@ export default class MqttClientController {
                 console.log('first connection, subscribing to topics!');
                 for (var key in subscribeTopics) {
                     if (subscribeTopics.hasOwnProperty(key)) {
-                        this.SubscribeToTopic(subscribeTopics[key]);
+                        this.SubscribeToTopic(subscribeTopics[key]+this.clientId);
                     }
                 }
             }

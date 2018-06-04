@@ -1,4 +1,3 @@
-
 import auth from "basic-auth";
 import config from "../configs/config";
 import winston from 'winston';

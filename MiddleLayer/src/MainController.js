@@ -92,32 +92,50 @@ async function ProcessDataMessageHandler(topic, message) {
         case config.MQTTOptions.receiveMessageTopics.receivedPackageTopic:
             //winston.info('we have weather topic');
             decodedData = myProto.DecodeBuffer(message, config.csvConfig.csvDataLookupType);
-            if (decodedData) {
-                await SaveToMongo(decodedData, config.MongoDBOptions.weatherDataCollectionName);
-                //send confirmation of receiving package
-                mqttBrokerClient.PublishMessageToTopic(config.MQTTOptions.sendMessageTopics.csvDataTopic,
-                    `Package "${decodedData.packageId}" processed by server`);
-                //add the message to the queue
-                messageQueue.push({ decodedData, topic });
+            if (decodedData && decodedData.deviceId) {
+                if (await DeviceIsValid(decodedData.deviceId)) {
+                    await SaveToMongo(decodedData, config.MongoDBOptions.weatherDataCollectionName);
+                    //send confirmation of receiving package
+                    mqttBrokerClient.PublishMessageToTopic(config.MQTTOptions.sendMessageTopics.csvDataTopic + decodedData.deviceId,
+                        `Package "${decodedData.packageId}" processed by server`);
+                    //add the message to the queue
+                    messageQueue.push({ decodedData, topic });
+                }
             }
             break;
         case config.MQTTOptions.receiveMessageTopics.alertTopic:
             //winston.info('we have alarm topic');
             decodedData = myProto.DecodeBuffer(message, config.csvConfig.csvAlertLookupType);
-            if (decodedData.packageId) {
-                await SaveToMongo(decodedData, config.MongoDBOptions.alertDataCollectionName);
-                //send confirmation of receiving package
-                mqttBrokerClient.PublishMessageToTopic(config.MQTTOptions.sendMessageTopics.alertReceivedTopic,
-                    `Package "${decodedData.packageId}" processed by server`);
-                //add the message to the queue
-                messageQueue.push({ decodedData, topic });
+            if (decodedData && decodedData.deviceId) {
+                if (await DeviceIsValid(decodedData.deviceId)) {
+                    await SaveToMongo(decodedData, config.MongoDBOptions.alertDataCollectionName);
+                    //send confirmation of receiving package
+                    mqttBrokerClient.PublishMessageToTopic(config.MQTTOptions.sendMessageTopics.alertReceivedTopic + decodedData.deviceId,
+                        `Package "${decodedData.packageId}" processed by server`);
+                    //add the message to the queue
+                    messageQueue.push({ decodedData, topic });
+                }
             }
             break;
         default:
             winston.error('------------>the topic is unknown!!!!<---------------');
     }
 }
-
+async function DeviceIsValid(deviceId) {
+    try {
+        var query = { deviceId: deviceId };
+        let deviceResult = await mongoDbController.FindOneItem(query, config.MongoDBOptions.devicesCollectionName);
+        if (!deviceResult) {
+            winston.warning(`device ${deviceId} not found in devices table`);
+            return false;
+        }
+        winston.info(`device ${deviceResult.deviceId} has deleted: ${deviceResult.isDeleted}`);
+        return deviceResult.isDeleted == 'false' ? true : false;
+    } catch (err) {
+        winston.error('Cannot Read Device', { error: err });
+        return false;
+    }
+}
 async function SaveToMongo(decodedData, collectionName) {
     //save to MongoDB
     try {
