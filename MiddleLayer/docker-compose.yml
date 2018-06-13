@@ -1,8 +1,8 @@
 version: "3"
 services:
   mosquitto:
-    container_name: eclipse-mosquitto    
-    image: eclipse-mosquitto:latest
+    container_name: handmosquitto    
+    image: mosquittowithpass:latest
     ports:
       - "1883:1883"
       - "9001:9001" 

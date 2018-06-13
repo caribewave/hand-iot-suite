@@ -45,8 +45,6 @@ module.exports = {
         }
     },
     MongoDBOptions: {
-        username: 'admin',
-        password: 'admin',
         hosts: process.env.MONGO_ENV || 'localhost:27017',
         database: 'CSVData',
         options: '',
