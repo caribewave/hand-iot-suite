@@ -10,7 +10,7 @@ winston.level = process.env.LOG_LEVEL || config.loggingLevel;
 winston.configure({
     transports: [
         new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: '../Logs/MiddleLayer.log' })
+        //new (winston.transports.File)({ filename: '../Logs/MiddleLayer.log' })
     ]
 });
 const myProto = new ProtobufController(config.paths.protoFilePath);

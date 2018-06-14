@@ -28,6 +28,8 @@ services:
     container_name: middlelayercontainer
     #restart: always
     image: middlelayer:latest
+    ports:
+      - "60000:60000"
     environment:
       MONGO_ENV: "mongo"
       MOSQUITTO_ENV: "mosquitto"

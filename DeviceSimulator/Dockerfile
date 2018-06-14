@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:8
 RUN mkdir -p /usr/src/DeviceSimulator
 WORKDIR /usr/src/DeviceSimulator
 COPY package.json /usr/src/DeviceSimulator/
